@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-const std::string path = "E:\\Coding\\C-C++\\CodeBlocks Project\\LocalFileTransfer\\config.ini";
-
 std::vector<std::string> pathList;
 std::vector<std::string> destinationList;
 
@@ -42,9 +40,13 @@ void createParentDirectory(std::string path)
 
 bool Initialize()
 {
+    char configPath[245];
+    GetCurrentDirectory(sizeof(configPath), configPath);
+    strcat(configPath, "\\config.ini");
+
     char buffer[120];
     // NoOverwrite
-    if (!GetPrivateProfileString("Init", "NoOverwrite", "true", buffer, sizeof(buffer), path.c_str()))
+    if (!GetPrivateProfileString("Init", "NoOverwrite", "true", buffer, sizeof(buffer), configPath))
     {
         std::clog << "NoOverwrite section stopped." << std::endl;
         flag = GetLastError();
@@ -62,7 +64,7 @@ bool Initialize()
     }
 
     // Input
-    if (!GetPrivateProfileString("Init", "Input", "input.txt", buffer, sizeof(buffer), path.c_str()))
+    if (!GetPrivateProfileString("Init", "Input", "input.txt", buffer, sizeof(buffer), configPath))
     {
         std::clog << "Input section stopped." << std::endl;
         flag = GetLastError();
@@ -72,7 +74,7 @@ bool Initialize()
     inputFile = buffer;
 
     // Input
-    if (!GetPrivateProfileString("Init", "Destination", "destination.txt", buffer, sizeof(buffer), path.c_str()))
+    if (!GetPrivateProfileString("Init", "Destination", "destination.txt", buffer, sizeof(buffer), configPath))
     {
         std::clog << "Destination section stopped." << std::endl;
         flag = GetLastError();
